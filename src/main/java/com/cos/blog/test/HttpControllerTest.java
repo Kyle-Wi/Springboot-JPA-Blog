@@ -20,6 +20,7 @@ public class HttpControllerTest {
     // 인터넷 브라우저 요청은 무조건 get요청밖에 할 수 없다.
     // @RequestParam get 요청을 했을 때 데이터를 인자로 받을 수 있다.
 
+
     @GetMapping("/http/get")
     public String getTest(Member m){ //http://localhost:8080/http/get?id=1&username=홍길&password=1234&state=배고프다아의 값을 getTest에 넣는다.
 

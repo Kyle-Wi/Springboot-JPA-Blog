@@ -1,5 +1,9 @@
 package com.cos.blog.test;
 
+// @Getter @Setter = @Data
+// @AllArgsConstructor
+// @NoArgsConstructor
+// @Builder
 public class Member {
     
     private int id;
@@ -8,7 +12,9 @@ public class Member {
     private String state;
     private String email;
     
-    
+
+
+
     public Member(int id, String username, String password, String state, String email) {
         this.id = id;
         this.username = username;
