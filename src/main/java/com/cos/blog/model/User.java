@@ -4,9 +4,12 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.print.DocFlavor.STRING;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,11 +45,62 @@ public class User {
     @Column(nullable = false, length = 50) //null값을 거부하고. length를 50자로 한정
     private String email;
 
-    @ColumnDefault("'user'")
-    private String role; // Enum을 쓰는게 좋다. // admin, user, manager 등등 enum을 통해 도메인을 정할 수 있다. 예컨대 저 3개중에 하나만 쓸 수 있음
+    // @ColumnDefault("'user'") 
+    // DB에는 ROLETYPE이 없다. 
+    @Enumerated(EnumType.STRING)
+    private RoleType role; // Enum을 쓰는게 좋다. 타입이 강제되어서 실수할 가능성을 줄인다.// ADMIN, USER, MANAGER 등등 enum을 통해 도메인을 정할 수 있다. 예컨대 저 3개중에 하나만 쓸 수 있음
 
     @CreationTimestamp // 시간이 자동으로 입력이 된다.
     private Timestamp createDate; //java.sql , 만약에 여기에 아무것도 안 넣어도 현재시간이 자동으로 입력 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public Timestamp getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
+    }
+
+    public RoleType getRole() {
+        return role;
+    }
+
+    public void setRole(RoleType role) {
+        this.role = role;
+    }
 
     
 
