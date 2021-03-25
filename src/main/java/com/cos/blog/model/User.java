@@ -36,7 +36,7 @@ public class User {
     private int id; // 시퀀스(oracle), auto_increment(mysql) , 만약 여기에 아무값도 안 넣어도 자동으로 전략을 따라감
 
 
-    @Column(nullable = false, length = 30) //null값을 거부하고. length를 30자로 한정
+    @Column(nullable = false, length = 30, unique = true) //null값을 거부하고. length를 30자로 한정, unique 즉 중복 가입 안돼 @
     private String username; // 아이디
 
     @Column(nullable = false, length = 100) //null값을 거부하고. length를 100자로 한정 123456 => 해슁 (비밀번호 암호화할거라서 100자로 넉넉하게)

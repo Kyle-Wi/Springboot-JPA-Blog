@@ -11,10 +11,12 @@ import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +34,17 @@ public class DummyControllerTest {
     @Autowired // 의존성 주입 DI함수
     private UserRepository userRepository;
 
-    
+    @DeleteMapping("dummy/user/delete/{id}")
+    public String delete(@PathVariable int id){
+        try{
+        userRepository.deleteById(id);
+        }catch(EmptyResultDataAccessException e){
+            return "삭제 실패하였습니다. 해당 id는 존재하지 않습니다.";
+        }
+        return "삭제되었습니다. id : " + id;
+
+    }
+
     // email이랑 password를 바꾼다.
     @Transactional // save를 하지 않아도 update가 되는데 더티체킹이란 것과 관련있음
     @PutMapping("dummy/user/{id}") // 이건 put이고 밑의 get도 같은 주소인데 구분을 해준다.
@@ -40,6 +52,7 @@ public class DummyControllerTest {
         System.out.println("id:" + id);
         System.out.println("password:" + requestUser.getPassword());
         System.out.println("Email:" + requestUser.getEmail());
+        System.out.println("Email:" + requestUser.getUsername());
 
         User user = userRepository.findById(id).orElseThrow(()->{
             return new IllegalArgumentException("수정이 실패하였습니다.");
@@ -47,6 +60,9 @@ public class DummyControllerTest {
 
         user.setPassword(requestUser.getPassword());
         user.setEmail(requestUser.getEmail());
+        user.setUsername(requestUser.getUsername());
+
+
         
         // save함수는 id를 전달하지 않으면 insert를 해주고
         // save함수는 id를 전달하면 해당 id에 대한 데이터가 있으면 update를 해주고
@@ -55,7 +71,7 @@ public class DummyControllerTest {
 
         // 더티 체킹
         // save를 하지 않아도 update가 되는데 왜일까?        
-        return null;
+        return user;
     }
 
 
