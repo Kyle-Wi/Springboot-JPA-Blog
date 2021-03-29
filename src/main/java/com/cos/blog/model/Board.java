@@ -40,7 +40,6 @@ public class Board {
     private String content; // 섬머노트 라이브러리 , 일반 노트가 디자인 되어서 들어간다.<html>태그가 섞여서 디자인 된다.
 
 
-    @ColumnDefault("0")
     private int count; // 조회수
 
     @ManyToOne(fetch=FetchType.EAGER) //fetch:user 정보 필요한게 한개라서 바로 가져온다.// many = board, one = User , 즉 한 명의 유저가 여러 개의 BOARD를 쓸 수 있다. // 연관관계를 나타냄

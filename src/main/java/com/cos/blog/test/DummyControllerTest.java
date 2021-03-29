@@ -87,7 +87,7 @@ public class DummyControllerTest {
     public List<User> pageList(@PageableDefault(size=2,sort="id",direction=Sort.Direction.DESC) Pageable pageable) {
         Page<User> pagingUser = userRepository.findAll(pageable); // Page 타입을 리턴한다
 
-        List<User> users = pagingUser.getContent();
+        List<User> users = pagingUser.getContent(); // page타입인데 이를 리스트로도 getContent()를 통해 받을 수 있다.
         return users;
     }
 
