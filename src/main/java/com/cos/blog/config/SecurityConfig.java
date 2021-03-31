@@ -5,6 +5,7 @@ import com.cos.blog.config.auth.PrincipalDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,10 +21,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity // 시큐리티 필터가 등록이 된다.
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 특정 주소로 접근하면 권한 및 인증을 미리 체크하겠다는 뜻.
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-
+    
+    
     @Autowired
     private PrincipalDetailService PrincipalDetailService;
+    
+    
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        // TODO Auto-generated method stub
+        return super.authenticationManagerBean();
+    }           
 
     @Bean // Ioc가 된다. 즉 여기서 리턴된 값을 스프링이 관리
     public BCryptPasswordEncoder encodePWD(){
@@ -57,5 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/"); // 정상적으로 로그인 성공 시 해당 주소로 이동
                 
     
-    }           
+    }
+
+
 }
