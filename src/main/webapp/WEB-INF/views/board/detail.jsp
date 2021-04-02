@@ -46,5 +46,6 @@
     </div>
 </div>
 
+
 <script src="../../../../../../../js/board.js"></script>
 <%@ include file="../layouts/footer.jsp"%>
