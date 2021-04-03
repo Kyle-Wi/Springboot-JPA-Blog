@@ -171,7 +171,7 @@ public class UserController {
         };
         
         // 로그인 처리
-        System.out.println("자동 로그인이 진행됩니다.");
+        System.out.println("자동 로그인이 진행됩니다...");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(),cosKey));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
