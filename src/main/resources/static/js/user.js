@@ -33,10 +33,16 @@ let index = {
             contentType:"application/json; charset=utf-8", // body 데이터가 어떤 type인지
             dataType: "json" // 요청을 서버로해서 응답이 왔을 때 기본적으로 모든 것이 buffer로 오기 때문에 string(생긴게 json이라면 ->javascript오브젝트로 변경해줌)
         }).done(function(resp){
-            // 성공하면 실행하는 함수
-            alert("회원가입이 완료되었습니다.");
-            console.log(resp)
-            location.href="/"; // 반응하면 바로 어디로 이동할지 설정해주는 것
+            // 성공하면 실행하는 함수, 오류에 따라 분기해주어야 함.
+            if(resp.status === 500){
+                alert("회원가입이 실패하였습니다. 다시 시도해주세요. : 중복된 아이디 입니다.")
+                location.href="/auth/joinForm";
+            } else {
+                alert("회원가입이 성공하였습니다.")
+                location.href = "/"; // 성공하면 홈으로
+            }
+            
+             // 반응하면 바로 어디로 이동할지 설정해주는 것
         }).fail(function(error){
             // 실패하면 실행하는 함수
             alert(JSON.stringify(error)); // error 가 json으로 날라온다.

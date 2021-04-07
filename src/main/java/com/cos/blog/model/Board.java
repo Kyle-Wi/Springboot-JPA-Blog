@@ -2,6 +2,7 @@ package com.cos.blog.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +14,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.ColumnDefault;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -46,9 +48,14 @@ public class Board {
     @JoinColumn(name="userId") // userId라는 필드값으로 만들어진다.
     private User user; // DB는 오브젝트를 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다. //User 객체를 참조하기 때문에 자동으로 FK 참조가 되는 것
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER) //fetch: 필요할 때 가져올 때는 lazy // mappedby가 있으면 연관관계의 주인이 아니다(난 fk가 아니다) db에 칼럼을 만들지 마세요.
+
+
+
+    @JsonIgnoreProperties("{board}")
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) // 글을 삭제하면 댓글도 삭제되야하는데 그때 CASCADE에 REMOVE를 설정하면 된다. 이를 따로 공부하자
+    @javax.persistence.OrderBy("id desc") //fetch: 필요할 때 가져올 때는 lazy // mappedby가 있으면 연관관계의 주인이 아니다(난 fk가 아니다) db에 칼럼을 만들지 마세요.
     // joincolumn은 필요가 없다. 왜냐하면 한 board에 여러 댓글이 달릴 수 있는데 이때 원자성을 잃어버리기 때문에
-    private List<Reply> reply; // join문만을 통해 정보를 얻기 위해 필요한 것이다. 여러 댓글이 달릴 수 있으니 LIST로 가져온다.
+    private List<Reply> replys; // join문만을 통해 정보를 얻기 위해 필요한 것이다. 여러 댓글이 달릴 수 있으니 LIST로 가져온다.
 
     @CreationTimestamp
     private java.sql.Timestamp createDate;

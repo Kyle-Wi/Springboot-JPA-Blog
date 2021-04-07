@@ -2,9 +2,12 @@ package com.cos.blog.service;
 
 
 
+import com.cos.blog.dto.ReplySaveRequestDto;
 import com.cos.blog.model.Board;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
+import com.cos.blog.repository.ReplyRepository;
+import com.cos.blog.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,12 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private ReplyRepository replyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
 
@@ -61,7 +70,33 @@ public class BoardService {
 
         return boardRepository.findAll(pageable); // 페이징을 하면 리턴 타입이 Page로 바뀐다.
     }
+    
+    @Transactional
+    public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto){
 
+        // User user = userRepository.findById(replySaveRequestDto.getUserId()).orElseThrow(()->{
+        //     return new IllegalArgumentException("댓글 작성이 실패하였습니다 : 게시글을 찾을 수 없습니다.");
+        // }); // 영속화
+
+
+        // Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()->{
+        //     return new IllegalArgumentException("댓글 작성이 실패하였습니다 : 게시글을 찾을 수 없습니다.");
+        // }); // 영속화
+
+        // Reply reply = new Reply();
+        // reply.update(user,board,replySaveRequestDto.getContent());
+
+
+
+
+        int reply = replyRepository.mSave(replySaveRequestDto.getUserId(), replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
+        System.out.println(reply); // 오브젝트를 출력하게 되면 자동으로 toString()이 호출됨. 
+    }
+
+    @Transactional
+    public void 댓글삭제(int replyId){
+        replyRepository.deleteById(replyId);
+    }
 
     // 전통적인 로그인 방식
     // @Transactional(readOnly = true) // select 할 때 트랜잭션 시작, 서비스 종료 시 트랜잭션 종료 ( 정합성 보장 )
@@ -70,4 +105,5 @@ public class BoardService {
     //     return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
         
     // }
+
 }
